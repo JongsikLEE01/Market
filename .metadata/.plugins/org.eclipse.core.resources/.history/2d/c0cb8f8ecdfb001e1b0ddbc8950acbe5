@@ -1,0 +1,8 @@
+package shop.Service;
+
+import shop.dto.User;
+import shop.dto.PersistentLogin;
+
+public class UserServiceImpl implements UserService {
+	
+}

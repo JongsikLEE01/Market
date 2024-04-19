@@ -1,0 +1,47 @@
+package shop.service;
+
+import shop.dto.User;
+import shop.dto.PersistentLogin;
+
+public class UserServiceImpl implements UserService {
+
+	@Override
+	public int join(User user) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public User login(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String refreshToken(String userId) {
+		PersistentLogin persistentLogins = userDAO.selectToken(userId);
+		
+		String token = null;
+		if(persistentLogins == null) {
+			// 토큰이 없는 경우 토큰 등록
+			token = userDAO.insertToken(userId);
+		}else {
+			// 토큰이 없는 경우 토큰 수정
+			token = userDAO.updateToken(userId);
+		}
+		return token;
+	}
+
+	@Override
+	public int deleteToken(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public PersistentLogin selectTokenByToken(String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

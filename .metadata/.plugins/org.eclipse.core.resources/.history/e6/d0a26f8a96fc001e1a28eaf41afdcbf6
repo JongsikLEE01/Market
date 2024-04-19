@@ -1,0 +1,34 @@
+<%@page import="shop.dto.User"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="userDAO" class="shop.dao.UserRepository" />
+<%
+
+	// 회원 정보 수정 처리
+	String id = request.getParameter("id");
+	String pw = request.getParameter("pw");
+	String gender = request.getParameter("gender");
+	String year = request.getParameter("year");
+	String month = request.getParameter("month");
+	String day = request.getParameter("day");
+    String email = request.getParameter("email1") + "@" + request.getParameter("email2");
+	String phone = request.getParameter("phone");
+	String address = request.getParameter("address");
+	
+	User user = new User();
+	user.setId(id);
+	user.setPassword(pw);
+	user.setGender(gender);
+    user.setBirth(year + "-" + month + "-" + day);
+    user.setMail(email);
+    user.setPhone(phone);
+    user.setAddress(address);
+    
+    int result = userDAO.update(user);
+    if (result > 0 ){
+        response.sendRedirect("complete.jsp?msg=2");
+    } else {
+        response.sendRedirect("update.jsp");
+    }
+
+%>

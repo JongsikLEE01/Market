@@ -1,0 +1,42 @@
+<!-- 상품 등록 처리 -->
+<%@page import="shop.dto.Product"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    // 폼 데이터 수신
+    String productId = request.getParameter("productId");
+    String name = request.getParameter("name");
+    String unitPrice = request.getParameter("unitPrice");
+    String description = request.getParameter("description");
+    String manufacturer = request.getParameter("manufacturer");
+    String category = request.getParameter("category");
+    String unitsInStock = request.getParameter("unitsInStock");
+    String quantity = request.getParameter("quantity");
+    String file = request.getParameter("file");
+	
+    
+    // User 객체 생성 및 값 설정
+    Product product = new Product();
+    product.setId(id);
+    product.setPassword(pw);
+    product.setName(name);
+    product.setGender(gender);
+    product.setBirth(year + "-" + month + "-" + day);
+    product.setMail(email);
+    product.setPhone(phone);
+    product.setAddress(address);
+
+    // 데이터베이스 연결 및 사용자 추가 로직
+    UserRepository userDAO = new UserRepository();
+    int result = userDAO.insert(user);
+
+    // 결과에 따른 응답 페이지 리다이렉션
+    if (result > 0) {
+        // 회원 가입 성공
+        response.sendRedirect("complete.jsp?msg=1");
+    } else {
+        // 회원 가입 실패
+        out.println("<script>alert('상품등록 실패. 다시 시도해 주세요.'); history.back();</script>");
+    }
+    
+%>
