@@ -136,8 +136,8 @@ public class ProductRepository extends JDBConnection {
 	public int insert(Product product) {
 		int result = 0;
 		
-		String sql = " INSERT INTO product VALUES "
-					+ " ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+		String sql = " INSERT INTO product "
+					+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
 		
 		try {
 			psmt = con.prepareStatement(sql);
@@ -150,8 +150,13 @@ public class ProductRepository extends JDBConnection {
 			psmt.setLong( 7, product.getUnitsInStock() );
 			psmt.setString( 8, product.getCondition() );
 			psmt.setString( 9, product.getFile() );
+			psmt.setInt( 10, 0);
 			
 			result = psmt.executeUpdate();
+			
+			if(result > 0) {
+				return result;
+			}
 		} catch (SQLException e) {
 			System.err.println("로그인 시, 예외 발생");
 			e.printStackTrace();
@@ -169,10 +174,18 @@ public class ProductRepository extends JDBConnection {
 		int result = 0;
 		
 		String sql = " UPDATE product` "
-				   + " SET product_id = ?, name = ?, unit_price = ? "
-				   + " , description = ?, manufacturer = ?, category = ? "
-				   + " , units_in_stock = ?,  `condition` = ? "
-				   + " WHERE product_id = ? AND name = ? ";
+				   + " SET "
+				   + " product_id = ?"
+				   + " , name = ?"
+				   + " , unit_price = ? "
+				   + " , description = ?"
+				   + " , manufacturer = ?"
+				   + " , category = ? "
+				   + " , units_in_stock = ?"
+				   + " , condition = ? "
+				   + " , file = ? "
+				   + " , quantity = ?"
+				   + " WHERE product_id = ? ";
 		
 		try {
 			psmt = con.prepareStatement(sql);
@@ -185,9 +198,10 @@ public class ProductRepository extends JDBConnection {
 			psmt.setString(6, product.getCategory());
 			psmt.setLong(7, product.getUnitsInStock());
 			psmt.setString(8, product.getCondition());
+			psmt.setString(9, product.getFile());
+			psmt.setInt(10, 0);
 			// product 테이블에서 where 조건으로 찾는 값들
-			psmt.setString(9, product.getProductId());
-			psmt.setString(10, product.getName());
+			psmt.setString(11, product.getProductId());
 			
 			result = psmt.executeUpdate();
 		}catch (SQLException e) {

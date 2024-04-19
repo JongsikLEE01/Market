@@ -1,8 +1,7 @@
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="shop.dto.Product"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +12,7 @@
 </head>
 <% 
 	String root = request.getContextPath(); 
-	// 데이터 베이스에서 상품 목록 가져와서 그리드로 뿌려야될듯
+	// 데이터 베이스에서 상품 목록 가져와서 그리드로 뿌려야될듯  required
 %>
 <body>   
 	<jsp:include page="/layout/header.jsp" />
@@ -24,7 +23,7 @@
 			<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
 				
 				<div class="container shop" >
-					<form action="${root}/shop/add_pro.jsp" name="addForm" method="post" enctype="multipart/form-data">
+					<form action="add_pro.jsp" name="addForm" method="get" onsubmit="return checkProduct()" enctype="multipart/form-data">
 					
 						<div class="input-group mb-3 row">
 							<label class="input-group-text col-md-2" id="">상품 이미지</label>
@@ -58,56 +57,56 @@
 						
 						<div class="input-group mb-3 row">
 							<label class="input-group-text col-md-2" id="">제조사</label>
-							<input type="text" class="form-control col-md-8" name="manufacturer"  required>
+							<input type="text" class="form-control col-md-8" name="manufacturer">
 						</div>
 						
 						<div class="input-group mb-3 row">
 							<label class="input-group-text col-md-2" id="">분류</label>
-							<input type="text" class="form-control col-md-8" name="category"  required>
+							<input type="text" class="form-control col-md-8" name="category">
 						</div>
 						
 						<div class="input-group mb-3 row">
 							<label class="input-group-text col-md-2" id="">재고 수</label>
-							<input type="number" class="form-control col-md-8"  name="unitsInStock"  required>
+							<input type="number" class="form-control col-md-8"  name="unitsInStock">
 						</div>
 						
 						<div class="input-group mb-3 row">
 							<label class="input-group-text col-md-2" id="">상태</label>
 							<div class="col-md-8 d-flex align-items-center">
-							<div class="radio-box d-flex">
-								<div class="radio-item mx-3">
-									<input type="radio" class="form-check-input" name="condition" value="신규 제품" value="NEW" id="condition-new"> 
-									<label for="condition-new">신규 제품</label>
-								</div>
-								
-								<div class="radio-item mx-3">
-									<input type="radio" class="form-check-input " name="condition" value="중고 제품" value="OLD" id="condition-old"> 
-									<label for="condition-old">중고 제품</label>
-								</div>
-								
-								<div class="radio-item mx-3">
-									<input type="radio" class="form-check-input " name="condition" value="재생 제품" value="RE" id="condition-re"> 
-									<label for="condition-re">재생 제품</label>
+								<div class="radio-box d-flex">
+									<div class="radio-item mx-3">
+										<input type="radio" class="form-check-input" name="condition" value="신규 제품" value="NEW" id="condition-new"> 
+										<label for="condition-new">신규 제품</label>
+									</div>
+									
+									<div class="radio-item mx-3">
+										<input type="radio" class="form-check-input " name="condition" value="중고 제품" value="OLD" id="condition-old"> 
+										<label for="condition-old">중고 제품</label>
+									</div>
+									
+									<div class="radio-item mx-3">
+										<input type="radio" class="form-check-input " name="condition" value="재생 제품" value="RE" id="condition-re"> 
+										<label for="condition-re">재생 제품</label>
+									</div>
 								</div>
 							</div>
-						</div>
 						</div>						
+						<div class="container p-5">
+						    <div class="row justify-content-between">
+						        <div class="col-auto">
+						            <a href="<%= root %>/shop/products.jsp" class="btn btn-secondary btn-lg">목록</a>
+						        </div>
+						        <div class="col-auto">
+						            <button type="submit" class="btn btn-primary btn-lg">등록</button>
+						        </div>
+						    </div>
+						</div>
 					</form>
-				</div>
+				</div><!-- 메인컨테이너 끝 -->
 				
-				
+						
 			</div>
 		</div>
-	</div>
-	<div class="container p-5">
-	    <div class="row justify-content-between">
-	        <div class="col-auto">
-	            <a href="<%= root %>/shop/products.jsp" class="btn btn-secondary btn-lg">목록</a>
-	        </div>
-	        <div class="col-auto">
-	            <a href="<%= root %>/shop/add_pro.jsp" class="btn btn-primary btn-lg">등록</a>
-	        </div>
-	    </div>
 	</div>
 
 

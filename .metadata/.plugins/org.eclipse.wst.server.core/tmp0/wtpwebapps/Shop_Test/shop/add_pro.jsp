@@ -1,22 +1,26 @@
 <!-- 상품 등록 처리 -->
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="shop.dto.Product"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     // 폼 데이터 수신
-    String productId = request.getParameter("productId");	  	// 상품아이디
-    String name = request.getParameter("name");				  	// 상품명
-    String reqUnitPrice = request.getParameter("unitPrice");  	// 단가
-    String description = request.getParameter("description"); 	// 설명 
-    String manufacturer = request.getParameter("manufacturer");	// 제조사
-    String category = request.getParameter("category");			// 카테고리
-    String reqUnitsInStock = request.getParameter("unitsInStock"); // 재고수
-    String condition = request.getParameter("condition");	// 상태
-    String file = request.getParameter("file");				// 파일경로
+    String productId = request.getParameter("productId");	  		// 상품아이디
+    String name = request.getParameter("name");				  		// 상품명
+    String reqUnitPrice = request.getParameter("unitPrice");  		// 단가
+    String description = request.getParameter("description"); 		// 설명 
+    String manufacturer = request.getParameter("manufacturer");		// 제조사
+    String category = request.getParameter("category");				// 카테고리
+    String reqUnitsInStock = request.getParameter("unitsInStock");  // 재고수
+    String condition = request.getParameter("condition");			// 상태
+    String file = request.getParameter("file");						// 파일경로
+    int unitPrice = 0;
+    long unitsInStock = 0;
     
-    Integer unitPrice = Integer.parseInt(reqUnitPrice);
-    long unitsInStock= Long.parseLong(reqUnitsInStock);
+    if(reqUnitPrice != null && reqUnitPrice.isEmpty())
+	    unitPrice = Integer.parseInt(reqUnitPrice);
+    if(reqUnitsInStock != null && reqUnitsInStock.isEmpty())
+	    unitsInStock= Long.parseLong(reqUnitsInStock);    	
+    
     
     // User 객체 생성 및 값 설정
     Product product = new Product();
@@ -39,7 +43,7 @@
         response.sendRedirect("complete.jsp?msg=1");
     } else {
         // 상품등록 실패
-        out.println("<script>alert('상품등록 실패. 다시 시도해 주세요.'); history.back();</script>");
+        out.println("<script>alert('상품 등록 실패. 다시 시도해 주세요.'); history.back();</script>");
     }
     
 %>
