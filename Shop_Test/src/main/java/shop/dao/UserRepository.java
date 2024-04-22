@@ -12,7 +12,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 회원 등록
 	 * @param user
-	 * @return
+	 * @return result
 	 */
 	public int insert(User user) {
 		int result = 0;
@@ -44,7 +44,7 @@ public class UserRepository extends JDBConnection {
 	 * 로그인을 위한 사용자 조회
 	 * @param id
 	 * @param pw
-	 * @return
+	 * @return user
 	 */
 	public User login(String id, String pw) {
 		User user = new User();
@@ -78,7 +78,7 @@ public class UserRepository extends JDBConnection {
 	 * 로그인을 위한 사용자 조회
 	 * @param id
 	 * @param pw
-	 * @return
+	 * @return user
 	 */
 	public User getUserById(String id) {
 		User user = new User();
@@ -117,7 +117,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 회원 수정
 	 * @param user
-	 * @return
+	 * @return result
 	 */
 	public int update(User user) {
 		int result = 0;
@@ -154,7 +154,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 회원 삭제
 	 * @param id
-	 * @return
+	 * @return result
 	 */
 	public int delete(String id) {
 		int result = 0;
@@ -195,7 +195,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 토큰 정보 조회
 	 * @param userId
-	 * @return
+	 * @return persistentLogin
 	 */
 	public PersistentLogin selectToken(String userId) {
 	    String sql = "SELECT * FROM persistent_logins WHERE user_id = ?";
@@ -225,7 +225,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 토큰 정보 조회 - 토큰으로
 	 * @param token
-	 * @return
+	 * @return persistentLogin
 	 */
 	public PersistentLogin selectTokenByToken(String token) {
 	    String sql = "SELECT * FROM persistent_logins WHERE token = ?";
@@ -257,7 +257,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 자동 로그인 토큰 생성
 	 * @param userId
-	 * @return
+	 * @return token
 	 */
 	public String insertToken(String userId) {
 		 int result = 0;
@@ -280,7 +280,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 자동 로그인 토큰 갱신
 	 * @param userId
-	 * @return
+	 * @return token
 	 */
 	public String updateToken(String userId) {
 	    int result = 0;
@@ -305,7 +305,7 @@ public class UserRepository extends JDBConnection {
 	 * 토큰 삭제
 	 * - 로그아웃 시, 자동 로그인 풀림
 	 * @param userId
-	 * @return
+	 * @return result
 	 */
 	public int deleteToken(String userId) {
 	    int result = 0;
@@ -323,23 +323,4 @@ public class UserRepository extends JDBConnection {
 	    System.out.println("자동 로그인 정보 " + result + "개의 데이터가 삭제되었습니다.");
 	    return result;
 	}
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

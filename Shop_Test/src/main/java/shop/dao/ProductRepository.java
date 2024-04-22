@@ -10,7 +10,7 @@ public class ProductRepository extends JDBConnection {
 	
 	/**
 	 * 상품 목록
-	 * @return
+	 * @return productList
 	 */
 	public List<Product> list() {
 		List<Product> productList = new ArrayList<Product>();
@@ -39,7 +39,7 @@ public class ProductRepository extends JDBConnection {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("주문 목록 조회 중 에러가 발생하였습니다.");
+			System.err.println("상품 목록 조회 중, 에러 발생!");
 		}
 		return productList;
 	}
@@ -83,7 +83,7 @@ public class ProductRepository extends JDBConnection {
 			}			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("상품 목록 조회 중 에러가 발생하였습니다.");
+			System.err.println("상품 검색 중, 에러 발생!");
 		}
 		return productList;
 	}
@@ -91,7 +91,7 @@ public class ProductRepository extends JDBConnection {
 	/**
 	 * 상품 조회
 	 * @param productId
-	 * @return
+	 * @return product
 	 */
 	public Product getProductById(String productId) {
 		Product product = new Product();
@@ -131,7 +131,7 @@ public class ProductRepository extends JDBConnection {
 	/**
 	 * 상품 등록
 	 * @param product
-	 * @return
+	 * @return result
 	 */
 	public int insert(Product product) {
 		int result = 0;
@@ -154,11 +154,10 @@ public class ProductRepository extends JDBConnection {
 			
 			result = psmt.executeUpdate();
 			
-			if(result > 0) {
-				return result;
-			}
+			if(result > 0)	return result;
+			else	return 0;
 		} catch (SQLException e) {
-			System.err.println("로그인 시, 예외 발생");
+			System.err.println("상품 등록 중, 예외 발생");
 			e.printStackTrace();
 		}
 		return result;
@@ -168,56 +167,52 @@ public class ProductRepository extends JDBConnection {
 	/**
 	 * 상품 수정
 	 * @param product
-	 * @return
+	 * @return result
 	 */
 	public int update(Product product) {
 		int result = 0;
-		
-		String sql = " UPDATE product` "
-				   + " SET "
-				   + " product_id = ?"
-				   + " , name = ?"
-				   + " , unit_price = ? "
-				   + " , description = ?"
-				   + " , manufacturer = ?"
-				   + " , category = ? "
-				   + " , units_in_stock = ?"
-				   + " , condition = ? "
-				   + " , file = ? "
-				   + " , quantity = ?"
-				   + " WHERE product_id = ? ";
-		
+		String sql = " UPDATE product "
+					+ " SET file = ? "
+					+ " , product_id = ?"
+					+ " , name = ? "
+					+ " , unit_price = ? "
+					+ " , description = ? "
+					+ " , manufacturer = ? "
+					+ " , category = ? "
+					+ " , units_in_stock = ? "
+					+ " , `condition` = ? "
+					+ " WHERE product_id = ? ";
+
 		try {
 			psmt = con.prepareStatement(sql);
-			// 업데이트 될 값들
-			psmt.setString(1, product.getProductId());
-			psmt.setString(2, product.getName());
-			psmt.setLong(3, product.getUnitPrice());
-			psmt.setString(4, product.getDescription());
-			psmt.setString(5, product.getManufacturer());
-			psmt.setString(6, product.getCategory());
-			psmt.setLong(7, product.getUnitsInStock());
-			psmt.setString(8, product.getCondition());
-			psmt.setString(9, product.getFile());
-			psmt.setInt(10, 0);
-			// product 테이블에서 where 조건으로 찾는 값들
-			psmt.setString(11, product.getProductId());
-			
+			psmt.setString(1, product.getFile());
+			psmt.setString(2, product.getProductId());
+			psmt.setString(3, product.getName());
+			psmt.setInt(4, product.getUnitPrice());
+			psmt.setString(5, product.getDescription());
+			psmt.setString(6, product.getManufacturer());
+			psmt.setString(7, product.getCategory());
+			psmt.setLong(8, product.getUnitsInStock());
+			psmt.setString(9, product.getCondition());
+			psmt.setString(10, product.getProductId());
+
 			result = psmt.executeUpdate();
-		}catch (SQLException e) {
-			System.err.println("회원 정보 수정 중, 에러 발생!");
+			
+			if(result > 0) {
+	            return result;
+			} 
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
+			System.err.println("상품 수정 중 에러가 발생하였습니다.");
 		}
-		
-		return result;
+			return result;
 	}
-	
-	
 	
 	/**
 	 * 상품 삭제
 	 * @param product
-	 * @return
+	 * @return result
 	 */
 	public int delete(String productId) {
 		int result = 0;
@@ -230,8 +225,11 @@ public class ProductRepository extends JDBConnection {
 	        psmt.setString(1, productId);
 
 	        result = psmt.executeUpdate();
+	        
+			if(result > 0)	return result;
+			else	return 0;
 		} catch (SQLException e) {
-			System.err.println("상품 조회 중, 에러 발생!");
+			System.err.println("상품 삭제 중, 에러 발생!");
 			e.printStackTrace();
 		}
 		return result;

@@ -1,0 +1,75 @@
+<%@page import="java.io.IOException"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.FileItemFactory"%>
+<%@page import="shop.dao.ProductRepository"%>
+<%@page import="shop.dto.Product"%>
+<%
+	String loginId = (String) session.getAttribute("loginId");
+
+	//파일 저장 경로 및 크기 설정
+	String saveDirectory = application.getRealPath("/static/img");
+	int maxPostSize = 10 * 1024 * 1024;
+	
+	// 파일 업로드 요청을 파싱합니다.
+	FileItemFactory factory = new DiskFileItemFactory();
+	ServletFileUpload upload = new ServletFileUpload(factory);
+	upload.setSizeMax(maxPostSize);
+	
+	try {
+	    List<FileItem> items = upload.parseRequest(request);
+	    Map<String, String> formFields = new HashMap<String, String>();
+	
+	    String fileName = "";
+	    // 폼 필드를 반복하여 데이터 처리
+	    for (FileItem item : items) {
+	        if (item.isFormField()) formFields.put(item.getFieldName(), item.getString("UTF-8"));
+	        else {
+	            fileName = item.getName();
+	            if (fileName != null && !fileName.isEmpty()) {
+	                fileName = FilenameUtils.getName(fileName);
+	                File uploadedFile = new File(saveDirectory, fileName);
+	                item.write(uploadedFile);
+	            }
+	        }
+	    }
+	
+	// 폼 데이터 수신
+    String productId = request.getParameter("productId");	  		// 상품아이디
+    String name = request.getParameter("name");				  		// 상품명
+    Integer unitPrice = Integer.parseInt(request.getParameter("unitPrice"));  		// 단가
+    String description = request.getParameter("description"); 		// 설명 
+    String manufacturer = request.getParameter("manufacturer");		// 제조사
+    String category = request.getParameter("category");				// 카테고리
+    Long unitsInStock = Long.parseLong(request.getParameter("unitsInStock"));  // 재고수
+    String condition = request.getParameter("condition");			// 상태
+    String file = request.getParameter("file");						// 파일경로  	
+
+    
+    // User 객체 생성 및 값 설정
+    Product product = new Product();
+    product.setProductId(productId);
+    product.setName(name);
+    product.setUnitPrice(unitPrice);
+    product.setDescription(description);
+    product.setManufacturer(manufacturer);
+    product.setCategory(category);
+    product.setUnitsInStock(unitsInStock);
+    product.setCondition(condition);
+    product.setFile(file);
+
+    ProductRepository productDAO = new ProductRepository();
+    int result = productDAO.insert(product);
+
+    // 결과에 따른 응답 페이지 리다이렉션
+    if (result > 0) {
+        // 상품등록 성공
+        out.println("<script>alert('상품 등록 성공!');</script>");
+        response.sendRedirect("products.jsp");
+    } else {
+        // 상품등록 실패
+        out.println("<script>alert('상품 등록 실패. 다시 시도해 주세요.'); history.back();</script>");
+    }
+    
+%>

@@ -21,13 +21,13 @@
 	// 데이터 베이스에서 상품 목록
 	List<Product> productList = new ArrayList<Product>();
 	List<Product> keyProductList = new ArrayList<Product>();
-	ProductRepository productDao = new ProductRepository();
+	ProductRepository productDAO = new ProductRepository();
 	
-	productList = productDao.list();
+	productList = productDAO.list();
 	
 	// 키워드
 	String keyword = request.getParameter("keyword");
-	keyProductList = productDao.list(keyword);
+	keyProductList = productDAO.list(keyword);
 %>
 <body>   
 	<jsp:include page="/layout/header.jsp" />
@@ -40,10 +40,8 @@
 				<a href="<%= root %>/shop/editProducts.jsp" class="btn btn-success btn-lg px-3 gap-2">상품 편집</a>
 				<a href="<%= root %>/shop/cart.jsp" class="btn btn-warning btn-lg px-3 gap-2">장바구니</a>
 			</div>
-			<!-- cardView 사용? -->
             <div class="container mt-5">
 			    <div class="row">
-			        <%-- 서버 측 출력 --%>
 			        <%
 				    	if(keyword != null && !keyword.equals("") ){
 				    %>		
@@ -116,7 +114,6 @@
 	
 	<script>
     function fillModal(unitPrice, description) {
-        // 모달 내용을 채우는 작업
         document.getElementById('modalPrice').innerText = '￦ ' + unitPrice;
         document.getElementById('modalDescription').innerText = description;
     }

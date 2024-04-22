@@ -15,11 +15,10 @@
 </head>
 <% 
 	String root = request.getContextPath(); 
-	// 데이터 베이스에서 상품 목록 가져와서 그리드로 뿌려야될듯
 	List<Product> productList = new ArrayList<Product>();
-	ProductRepository productDao = new ProductRepository();
+	ProductRepository productDAO = new ProductRepository();
 	
-	productList = productDao.list();
+	productList = productDAO.list();
 %>
 <body>   
 	<jsp:include page="/layout/header.jsp" />
@@ -32,11 +31,8 @@
 				<a href="<%= root %>/shop/editProducts.jsp" class="btn btn-success btn-lg px-3 gap-2">상품 편집</a>
 			</div>
 			
-			<div>
-			<!-- cardView 사용? -->
             <div class="container mt-5">
 			    <div class="row">
-			        <%-- 서버 측 출력 --%>
 			        <c:forEach var="product" items="<%= productList %>">
 			            <div class="col-md-4 mb-3 px-2">
 			                <div class="card" style="width: 14rem;">
@@ -47,11 +43,11 @@
 									<p class="card-price text-end">￦ ${product.unitPrice}</p>
 			                        
 			                        <div class="d-flex justify-content-between mt-1 mb-1">
-<!-- 										<a href="cart.jsp" class="btn btn-white btn-sm text-primary border-primary">수정</a> -->
-<!-- 										<button class="btn btn-white btn-sm text-primary border-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" -->
-<%--    										 onclick="fillModal(${product.unitPrice}, '${product.description}')">삭제</button> --%>
-   										 <a href="<%= root %>/shop/update.jsp" class="btn btn-primary btn-lg px-4 gap-3">수정</a>
-   										 <a href="<%= root %>/shop/delete_pro.jsp" class="btn btn-outline-danger btn-lg px-4">삭제</a>
+   										 <a href="<%= root %>/shop/update.jsp?productId=${product.productId}" class="btn btn-primary btn-lg px-4 gap-3">수정</a>
+   										 <form action="<%= root %>/shop/delete_pro.jsp" method="POST">
+										 	<input type="hidden" name="productId" value="${ product.productId }">
+   										 	<a href="<%= root %>/shop/delete_pro.jsp?productId=${product.productId}" class="btn btn-outline-danger btn-lg px-4">삭제</a>
+   										 </form>
 									</div>	
 			                    </div>
 			                </div>
@@ -59,15 +55,10 @@
 			        </c:forEach>
 				</div>
 			</div>
-			</div>
+			
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp" />
 	<jsp:include page="/layout/script.jsp" />
 </body>
 </html>
-
-
-
-
-

@@ -73,3 +73,17 @@
 0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:22:10 +0900] "GET /Shop/shop/add.jsp HTTP/1.1" 404 721
 0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:22:15 +0900] "GET /Shop/shop/add.jsp HTTP/1.1" 404 721
 0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:22:16 +0900] "GET /Shop/shop/products.jsp HTTP/1.1" 404 721
+127.0.0.1 - - [19/Apr/2024:14:22:31 +0900] "GET / HTTP/1.1" 404 807
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:22:33 +0900] "GET /Shop/shop/add.jsp HTTP/1.1" 200 7121
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:22:56 +0900] "GET /Shop/shop/add_pro.jsp?file=%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EC%A0%95%EC%9D%98%EC%84%9C.PNG&productId=test&name=test&unitPrice=77770&description=test&manufacturer=test&category=test&unitsInStock=8888&condition=%EC%8B%A0%EA%B7%9C+%EC%A0%9C%ED%92%88 HTTP/1.1" 200 131
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:38 +0900] "GET /Shop/shop/add.jsp HTTP/1.1" 200 7121
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:39 +0900] "GET /Shop/shop/add.jsp HTTP/1.1" 200 7121
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:52 +0900] "GET /Shop/shop/add_pro.jsp?file=%EA%B0%9C%EB%B0%9C%EA%B8%B0%EA%B0%84.PNG&productId=test&name=test&unitPrice=77000&description=test&manufacturer=test&category=test&unitsInStock=1&condition=%EC%8B%A0%EA%B7%9C+%EC%A0%9C%ED%92%88 HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:52 +0900] "GET /Shop/shop/complete.jsp?msg=1 HTTP/1.1" 404 3191
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:56 +0900] "GET /Shop HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:56 +0900] "GET /Shop/ HTTP/1.1" 200 3808
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:57 +0900] "GET /Shop/shop/products.jsp HTTP/1.1" 200 10189
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:32:57 +0900] "GET /Shop%EA%B0%9C%EB%B0%9C%EA%B8%B0%EA%B0%84.PNG HTTP/1.1" 404 851
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:35:47 +0900] "GET /Shop/shop/editProducts.jsp HTTP/1.1" 200 9744
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:35:47 +0900] "GET /Shop%EA%B0%9C%EB%B0%9C%EA%B8%B0%EA%B0%84.PNG HTTP/1.1" 404 851
+0:0:0:0:0:0:0:1 - - [19/Apr/2024:14:35:48 +0900] "GET /Shop/shop/delete_pro.jsp HTTP/1.1" 404 3191

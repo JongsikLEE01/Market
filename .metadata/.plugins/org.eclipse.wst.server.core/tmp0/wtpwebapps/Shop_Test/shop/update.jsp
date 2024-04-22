@@ -1,8 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.util.ArrayList"%>
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="shop.dto.Product"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,116 +11,101 @@
 	<title>Products</title>
 	<jsp:include page="/layout/meta.jsp" />
 	<jsp:include page="/layout/link.jsp" />
+
 </head>
 <% 
 	String root = request.getContextPath(); 
-	// 데이터 베이스에서 상품 목록 가져와서 그리드로 뿌려야될듯
+	String productId = request.getParameter("productId");
+	
+	ProductRepository productDao = new ProductRepository();
+	Product product = productDao.getProductById(productId);
 %>
 <body>   
-	<jsp:include page="/layout/header.jsp" />
-	<div class="px-4 py-5 my-5 text-center">
-		<h1 class="display-5 fw-bold text-body-emphasis">상품 등록</h1>
+    <jsp:include page="/layout/header.jsp" />
+    <div class="px-4 py-5 my-5 text-center">
+		<h1 class="display-5 fw-bold text-body-emphasis">상품 수정</h1>
 		<div class="col-lg-6 mx-auto">
-			<p class="lead mb-4">Shop 쇼핑몰 입니다.</p>
+			<p class="lead mb-2">Shop 쇼핑몰 입니다.</p> <br><br>
 			<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-				
-				<!--  미니 프로젝트 했던거 사장님 상품 추가 코드 보면 될듯? -->
-				<div class="container shop p-5 mb-5" >
-					<form action="join_pro.jsp" name="joinForm" method="post" >
-						<div class="input-group mb-3 row">
-							 <img class="w-100 p-2" src="<%= request.getContextPath() %>${product.file}">
-						</div>
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">상품 이미지</label>
-							<input type="text" class="form-control col-md-10" name="file" placeholder="선택된 파일 없음" required>
-						</div>
-						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">상품코드</label>
-							<input type="password" class="form-control col-md-8" name="productId" required>
-						</div>
-						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">상품명</label>
-							<input type="password" class="form-control col-md-8" name="name"  required>
-						</div>
-						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">가격</label>
-							<input type="text" class="form-control col-md-8" name="unitPrice"  required>
-						</div>
-						
-						<div class="input-group mb-3 row">
-							<div class="col-md-12 p-0">
-								<label class="input-group-text" id="">상세 정보</label>
-							</div>
-								<div class="col-md-12">
-									<textarea class="form-control" style="heigth: 200px !improtant;" name="description"></textarea>
-								</div>
-						</div>
-						
-						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">제조사</label>
-							<input type="text" class="form-control col-md-8" name="manufacturer"  required>
-						</div>
-						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">분류</label>
-							<input type="text" class="form-control col-md-8" name="category"  required>
-						</div>
-						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">재고 수</label>
-							<input type="text" class="form-control col-md-8"  name="unitsInStock"  required>
+	            <img class="card-img-top" src="<%= root %><%= product.getFile() %>" alt="<%= product.getName() %>" style="width:100%; max-width: 400px;">
+	        </div>
+	        <br><br><br>
+			<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+				<form action="update_pro.jsp" name="product" method="post" onsubmit="return checkProduct()" enctype="multipart/form-data">
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="file">상품 이미지</label>
+						<input type="file" class="form-control col-md-8" name="file" placeholder="상품이미지">
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="productId">상품 코드</label>
+						<input type="text" class="form-control col-md-8" name="productId" value="<%= product.getProductId() %>" required >
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="name">상품명</label>
+						<input type="text" class="form-control col-md-8" name="name" value="<%= product.getName() %>" required >
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="unitPrice">가격</label>
+						<input type="text" class="form-control col-md-8" name="unitPrice" value="<%= product.getUnitPrice() %>" required >
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text row-md-4 rounded-end" id="description">상세 정보</label>
+						<input type="text" class="form-control form-control-lg col-md-12 rounded-start" style="height: 100px;" name="description" value="<%= product.getDescription() %>" required >
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="manufacturer">제조사</label>
+						<input type="text" class="form-control col-md-8" name="manufacturer" value="<%= product.getManufacturer() %>" required >
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="category">분류</label>
+						<input type="text" class="form-control col-md-8" name="category" value="<%= product.getCategory() %>"required >
+					</div>
+					<div class="input-group mb-3 row">
+						<label class="input-group-text col-md-4" id="unitsInStock">재고 수</label>
+						<input type="text" class="form-control col-md-8" name="unitsInStock" value="<%= product.getUnitsInStock() %>" required >
+					</div>
+				   <div class="input-group mb-3 row">
+					<div class="col-md-4 p-0">
+						<label class="input-group-text" id="">상태</label>
+					</div>
+					<div class="col-md-8 d-flex align-items-center">
+						<div class="radio-box d-flex small">
+							<div class="radio-item mx-3">
+						    <input type="radio" class="form-check-input" name="condition" value="NEW" id="condition-new" required
+	                        <%= (product.getCondition() != null && product.getCondition().equals("NEW")) ? "checked" : "" %> >  
+						    <label for="newProduct" class="small">신규 제품</label>
 						</div>
 						
-						<div class="input-group mb-3 row">
-							<label class="input-group-text col-md-2" id="">상태</label>
-							<div class="col-md-8 d-flex align-items-center">
-							<div class="radio-box d-flex">
-								<div class="radio-item mx-3">
-									<input type="radio" class="form-check-input" name="quantity" value="신규 제품" id="quantity-new"> 
-									<label for="quantity-female">신규 제품</label>
-								</div>
-								
-								<div class="radio-item mx-3">
-									<input type="radio" class="form-check-input " name="quantity" value="중고 제품" id="quantity-old"> 
-									<label for="quantity-male">중고 제품</label>
-								</div>
-								
-								<div class="radio-item mx-3">
-									<input type="radio" class="form-check-input " name="quantity" value="재생 제품" id="quantity-recycled"> 
-									<label for="quantity-male">재생 제품</label>
-								</div>
-							</div>
+						<div class="radio-item mx-3" >
+						    <input type="radio" class="form-check-input" name="condition" value="OLD" id="condition-old"
+   	                        <%= (product.getCondition() != null && product.getCondition().equals("OLD")) ? "checked" : "" %> >  
+						    <label for="usedProduct" class="small">중고 제품</label>
 						</div>
-						</div>						
-					</form>
-				</div>
-				
-				
+						
+						<div class="radio-item mx-3">
+						    <input type="radio" class="form-check-input" name="condition" value="RE" id="condition-re"
+   	                        <%= (product.getCondition() != null && product.getCondition().equals("RE")) ? "checked" : "" %> >  
+						    <label for="recycledProduct" class="small">재생 제품</label>
+						</div>
+						</div>
+					</div>
+				 	</div>
+				 		<div class="container">
+					    <div class="row justify-content-between">
+					        <div class="col-auto">
+					            <a href="<%= root %>/shop/products.jsp" class="btn btn-secondary btn-lg">목록</a>
+					        </div>
+					        <div class="col-auto">
+					            <button type="submit" class="btn btn-success btn-lg">수정</button>
+					        </div>
+					    </div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
-	<div class="container">
-	    <div class="row justify-content-between">
-	        <div class="col-auto">
-	            <a href="<%= root %>/shop/products.jsp" class="btn btn-secondary btn-lg">목록</a>
-	        </div>
-	        <div class="col-auto">
-	            <a href="<%= root %>/shop/add_pro.jsp" class="btn btn-primary btn-lg">등록</a>
-	        </div>
-	    </div>
-	</div>
 
-
-	<jsp:include page="/layout/footer.jsp" />
-	<jsp:include page="/layout/script.jsp" />
+    <jsp:include page="/layout/footer.jsp" />
+    <jsp:include page="/layout/script.jsp" />
 </body>
 </html>
-
-
-
-
-

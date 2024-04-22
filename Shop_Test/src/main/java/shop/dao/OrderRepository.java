@@ -12,7 +12,7 @@ public class OrderRepository extends JDBConnection {
 	/**
 	 * 주문 등록
 	 * @param user
-	 * @return
+	 * @return result
 	 */
 	public int insert(Order order) {
 		int result = 0;
@@ -44,7 +44,7 @@ public class OrderRepository extends JDBConnection {
 
 	/**
 	 * 최근 등록한 orderNo 
-	 * @return
+	 * @return no
 	 */
 	public int lastOrderNo() {
 		int no = 0;
@@ -71,7 +71,7 @@ public class OrderRepository extends JDBConnection {
 	/**
 	 * 주문 내역 조회 - 회원
 	 * @param userId
-	 * @return
+	 * @return productList
 	 * 주문번호, 상품명, 가격, 수량, 소개, 비고 
 	 */
 	public List<Product> list(String userId) {
@@ -110,7 +110,7 @@ public class OrderRepository extends JDBConnection {
 	 * 주문 내역 조회 - 비회원
 	 * @param phone
 	 * @param orderPw
-	 * @return
+	 * @return productList
 	 */
 	public List<Product> list(String phone, String orderPw) {
 		List<Product> productList = new ArrayList<>();

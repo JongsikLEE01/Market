@@ -19,7 +19,6 @@
 	}
 %>
 <body>   
-	
 	<jsp:include page="/layout/header.jsp" />
 	
 	<div class="row m-0 mypage">
