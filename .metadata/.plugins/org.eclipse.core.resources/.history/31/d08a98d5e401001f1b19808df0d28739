@@ -1,0 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Shop</title>
+</head>
+<body>
+	<jsp:include page="/layout/header.jsp" />
+
+	<div class="px-4 py-5 mt-5 text-center">
+		<h1 class="display-5 fw-bold text-body-emphasis">주문 정보</h1>
+	</div>
+	
+	<jsp:include page="/layout/footer.jsp" />
+	<jsp:include page="/layout/script.jsp" />
+</body>
+</html>

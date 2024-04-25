@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="keyProductList"/>
+		<item key="selection" value="productList"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="orderList"/>
+			<item value="orderDao"/>
+			<item value="productDao"/>
+			<item value="Dao"/>
+			<item value="EUC-KR"/>
+			<item value="productIODao"/>
+			<item value="등록"/>
 			<item value="keyProductList"/>
 			<item value="placeholder"/>
 			<item value="user"/>
@@ -15,6 +22,13 @@
 			<item value="key"/>
 		</list>
 		<list key="replacehistory">
+			<item value="productList"/>
+			<item value="orderDAO"/>
+			<item value="productDAO"/>
+			<item value="DAO"/>
+			<item value="UTF-8"/>
+			<item value="productIODAO"/>
+			<item value="삭제"/>
 			<item value="product"/>
 		</list>
 	</section>

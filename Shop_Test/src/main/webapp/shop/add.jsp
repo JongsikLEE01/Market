@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Products</title>
+	<title>Shop</title>
 	<jsp:include page="/layout/meta.jsp" />
 	<jsp:include page="/layout/link.jsp" />
 </head>
@@ -60,17 +60,17 @@
 					<div class="col-md-8 d-flex align-items-center">
 						<div class="radio-box d-flex small">
 							<div class="radio-item mx-3">
-						    <input type="radio" class="form-check-input" name="condition" value="NEW" id="newProduct" required >
+						    <input type="radio" class="form-check-input" name="condition" value="NEW" id="condition-new" required >
 						    <label for="newProduct" class="small">신규 제품</label>
 						</div>
 						
 						<div class="radio-item mx-3" >
-						    <input type="radio" class="form-check-input" name="condition" value="USED" id="usedProduct" >
+						    <input type="radio" class="form-check-input" name="condition" value="OLD" id="condition-old" >
 						    <label for="usedProduct" class="small">중고 제품</label>
 						</div>
 						
 						<div class="radio-item mx-3">
-						    <input type="radio" class="form-check-input" name="condition" value="RECYCLED" id="recycledProduct" >
+						    <input type="radio" class="form-check-input" name="condition" value="RE" id="condition-re" >
 						    <label for="recycledProduct" class="small">재생 제품</label>
 						</div>
 						</div>

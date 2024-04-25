@@ -45,7 +45,6 @@
 			document.getElementById('time').textContent = count
 			count--
 		}
-	
 	</script>
 </body>
 </html>

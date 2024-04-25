@@ -5,29 +5,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	
-	// 비회원 주문 내역 세션에 등록 처리
+	// 비회원 주문
 	String root = request.getContextPath();
 
   	String phone = request.getParameter("phone");
     String orderPw = request.getParameter("orderPw");
-    OrderRepository orderDao = new OrderRepository();
+    OrderRepository orderDAO = new OrderRepository();
     
- 	// 사용자가 입력한 전화번호를 받아와서 세션에 저장
     session.setAttribute("orderPhone", phone);
  	session.setAttribute("orderPw", orderPw);
     
-    // 전화번호와 주문 비밀번호를 사용하여 주문 내역을 조회
-    List<Product> orders = orderDao.list(phone, orderPw);
+    // 내역 조회
+    List<Product> orders = orderDAO.list(phone, orderPw);
 
-    // 주문 내역을 세션에 저장
+    // 내역 세션에 저장
     if(orders != null && !orders.isEmpty()) {
- 	    // 사용자가 입력한 전화번호를 받아와서 세션에 저장
         session.setAttribute("orderPhone", phone);
      	session.setAttribute("orderPw", orderPw);
         response.sendRedirect(root + "/user/order.jsp");
-    } else {
-	    out.println("<script>alert('해당 정보로 조회되지 않습니다.'); history.back();</script>");
-    }
-
+    } else 
+    	out.println("<script>alert('해당 정보로 조회되지 않습니다.'); history.back();</script>");
 %>

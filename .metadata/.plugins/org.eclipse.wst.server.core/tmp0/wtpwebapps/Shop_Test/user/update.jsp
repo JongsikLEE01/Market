@@ -7,7 +7,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Shop</title>
-	<jsp:include page="/layout/meta.jsp" /> <jsp:include page="/layout/link.jsp" />
+	<jsp:include page="/layout/meta.jsp" />
+	<jsp:include page="/layout/link.jsp" />
 </head>
 <body>   
 	<% 
@@ -20,14 +21,13 @@
 		
 		boolean login = false;
 		if( loginId != null && !loginId.isEmpty() ) {
-			// response.sendRedirect(root);
 			login = true;
 		}
 		
 		UserRepository userDAO = new UserRepository();
 		User loginUser = userDAO.getUserById(loginId);
 		
-		// 이메일 : 아이디@도메인 분리
+		// 이메일 : 아이디@메일도메인 분리
 		String mail = loginUser.getMail();
 		String[] temp = {"",""};
 		String[] email = (mail != null && mail.length() > 0) ? mail.split("@") : temp;
@@ -93,23 +93,17 @@
 			<div class="px-4 py-3 my-3 text-center">
 				<h1 class="display-5 fw-bold text-body-emphasis">회원 정보 수정</h1>
 			</div>
-			
-			<!-- 회원 가입 영역 -->
 			<div class="container shop m-auto mb-5">
 				<form action="update_pro.jsp" name="updateForm" method="post" >
 				
 					<div class="input-group mb-3 row">
 						<label class="input-group-text col-md-2" id="">아이디</label>
-						<input type="text" class="form-control col-md-10" 
-							   name="id" placeholder="아이디" required
-							   value="<%= loginUser.getId() %>">
+						<input type="text" class="form-control col-md-10" name="id" placeholder="아이디" required value="<%= loginUser.getId() %>">
 					</div>
 					
 					<div class="input-group mb-3 row">
 						<label class="input-group-text col-md-2" id="">이름</label>
-						<input type="text" class="form-control col-md-10" 
-							   name="name" placeholder="이름" required
-							   value="<%= loginUser.getName() %>">
+						<input type="text" class="form-control col-md-10" name="name" placeholder="이름" required value="<%= loginUser.getName() %>">
 					</div>
 					
 					<div class="input-group mb-3 row">
@@ -165,8 +159,7 @@
 								</div>
 								
 								<div class="col">
-									<input type="text" class="form-control" name="day" placeholder="일자" size="4" 
-										   value="<%= day %>">
+									<input type="text" class="form-control" name="day" placeholder="일자" size="4" value="<%= day %>">
 								</div>
 							</div>
 						</div>
@@ -177,9 +170,7 @@
 						
 						<div class="row col-md-10 align-items-center">
 							<div class="col-4 px-0">
-								<input type="text" class="form-control col-md-10" 
-									   name="email1" placeholder="이메일"
-									   value="<%= email1 %>">
+								<input type="text" class="form-control col-md-10" name="email1" placeholder="이메일" value="<%= email1 %>">
 							</div>
 							<div class="col-auto">
 								@
@@ -194,44 +185,29 @@
 							</div>
 						</div>
 					</div>
-					
 					<div class="input-group mb-3 row">
 						<label class="input-group-text col-md-2" id="">전화번호</label>
 						<input type="text" class="form-control col-md-10" 
 							   name="phone" placeholder="전화번호"
 							   value="<%= loginUser.getPhone() %>">
 					</div>
-					
 					<div class="input-group mb-3 row">
 						<label class="input-group-text col-md-2" id="">주소</label>
-						<input type="text" class="form-control col-md-10" 
-							   name="address" placeholder="주소"
-							   value="<%= loginUser.getAddress() %>">
+						<input type="text" class="form-control col-md-10" name="address" placeholder="주소" value="<%= loginUser.getAddress() %>">
 					</div>
-					
 					
 					<div class="d-flex justify-content-between mt-5 mb-5">
 						<a href="javascript: ;" onclick="alertDel()" class="btn btn-lg btn-danger" >탈퇴</a>
 						<input type="submit" class="btn btn-lg btn-primary" value="수정" />
 					</div>	
-					
-					
 				</form>
-			
 			</div>
-			
 			<jsp:include page="/layout/footer.jsp" />
 		</div>
 	</div>
 	
-	
-	
 	<jsp:include page="/layout/script.jsp" />
-	
-	
-
 	<script>
-		
 		let form = document.updateForm
 		
 		// 성별 선택
@@ -242,18 +218,15 @@
 		if( tempGender.value == '남' )		radioMale.checked = true
 		if( tempGender.value == '여' )		radioFemale.checked = true
 		
-		
 		// 생일 월 (select) 선택
 		let tempMonth = document.getElementById('temp-month')
 		let selectMonth = form.month
 		selectMonth.value = tempMonth.value
 		
-		
 		// 메일 도메인 (select) 선택
 		let tempEmail2 = document.getElementById('temp-email2')
 		let selectEmail2 = form.email2
 		selectEmail2.value = tempEmail2.value
-		
 		
 		// 탈퇴 체크
 		function alertDel() {
@@ -266,9 +239,7 @@
 				form.action = 'delete_pro.jsp'
 				form.submit()
 			}
-
 		}
-	
 	</script>
 </body>
 </html>

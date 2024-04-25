@@ -1,0 +1,25 @@
+<%@page import="shop.dto.Product"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	List<Product> cartList = (List<Product>) session.getAttribute("cartList");
+	
+	String userId = (String) session.getAttribute("loginId");
+	String orderForm = request.getParameter("orderForm");
+	String phone = request.getParameter("phone");
+	String orderPw = request.getParameter("orderPw");
+	String address = request.getParameter("address");
+	String deliveryDate = request.getParameter("deliveryDate");
+	String nation = request.getParameter("nation");
+	String zipCode = request.getParameter("zipCode");
+	String name = request.getParameter("name");
+	int totalPrice = Integer.parseInt(request.getParameter("sum"));
+	
+	Order order = new Order();
+	order.setUserId(userId);
+	order.setShipName(name);
+	order.setDate(deliveryDate);
+	order.setAddress(address);
+	order.setCountry(nation);
+	order.setZipCode(zipCode);
+%>

@@ -18,5 +18,4 @@
     }
     // 로그아웃 후 로그인 페이지로 리다이렉트
     response.sendRedirect("login.jsp");
-	
 %>

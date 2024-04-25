@@ -1,16 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="shop.dto.Product"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
      
 <!DOCTYPE html>
 <html>
 <head>	
 	<meta charset="UTF-8">
-	<title>Products</title>
+	<title>Shop</title>
 	<jsp:include page="/layout/meta.jsp" />
 	<jsp:include page="/layout/link.jsp" />
 	<jsp:include page="/layout/script.jsp" />
@@ -55,7 +55,7 @@
 									<p class="card-price text-end">￦ ${product.unitPrice}</p>
 			                        
 			                        <div class="d-flex justify-content-between mt-1 mb-1">
-										<a href="cart.jsp" class="btn btn-white btn-sm text-primary border-primary">🛒</a>
+										<a href="cart.jsp" class="btn btn-white btn-sm text-primary border-primary"><span class="material-symbols-outlined">shopping_bag</span></a>
 										<button class="btn btn-white btn-sm text-primary border-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
    										 onclick="fillModal(${product.unitPrice}, '${product.description}')">상세 정보</button>
 									</div>	
@@ -76,9 +76,8 @@
 									<p class="card-price text-end">￦ ${product.unitPrice}</p>
 			                        
 			                        <div class="d-flex justify-content-between mt-1 mb-1">
-										<a href="cart.jsp" class="btn btn-white btn-sm text-primary border-primary">🛒</a>
-										<button class="btn btn-white btn-sm text-primary border-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-   										 onclick="fillModal(${product.unitPrice}, '${product.description}')">상세 정보</button>
+										<a href="cart.jsp?productId=${product.productId}" class="btn btn-white btn-sm text-primary border-primary">🛒</a>
+										<a href="product.jsp?productId=${product.productId}" class="btn btn-white btn-sm text-primary border-primary">상세 정보</a>
 									</div>	
 			                    </div>
 			                </div>
@@ -91,33 +90,5 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">상세 정보</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <p id="modalPrice"></p>
-    		<p id="modalDescription"></p> 
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	<jsp:include page="/layout/footer.jsp" />
-	
-	<script>
-    function fillModal(unitPrice, description) {
-        document.getElementById('modalPrice').innerText = '￦ ' + unitPrice;
-        document.getElementById('modalDescription').innerText = description;
-    }
-	</script>
-
 </body>
 </html>

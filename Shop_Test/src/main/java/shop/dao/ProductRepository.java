@@ -14,7 +14,6 @@ public class ProductRepository extends JDBConnection {
 	 */
 	public List<Product> list() {
 		List<Product> productList = new ArrayList<Product>();
-		
 		String sql = " SELECT * "
 					+ " FROM product ";
 		try {
@@ -95,11 +94,9 @@ public class ProductRepository extends JDBConnection {
 	 */
 	public Product getProductById(String productId) {
 		Product product = new Product();
-		
 		String sql = " SELECT *"
 					+ " FROM product "
 					+ " WHERE product_id = ? ";
-		
 		try {
 			psmt = con.prepareStatement(sql);
 	        psmt.setString(1, productId);
@@ -135,10 +132,8 @@ public class ProductRepository extends JDBConnection {
 	 */
 	public int insert(Product product) {
 		int result = 0;
-		
 		String sql = " INSERT INTO product "
 					+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
-		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString( 1, product.getProductId() );
@@ -163,7 +158,6 @@ public class ProductRepository extends JDBConnection {
 		return result;
 	}
 	
-	
 	/**
 	 * 상품 수정
 	 * @param product
@@ -180,7 +174,7 @@ public class ProductRepository extends JDBConnection {
 					+ " , manufacturer = ? "
 					+ " , category = ? "
 					+ " , units_in_stock = ? "
-					+ " , `condition` = ? "
+					+ " , condition = ? "
 					+ " WHERE product_id = ? ";
 
 		try {
@@ -198,15 +192,13 @@ public class ProductRepository extends JDBConnection {
 
 			result = psmt.executeUpdate();
 			
-			if(result > 0) {
+			if(result > 0)
 	            return result;
-			} 
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("상품 수정 중 에러가 발생하였습니다.");
 		}
-			return result;
+		return result;
 	}
 	
 	/**
@@ -216,7 +208,25 @@ public class ProductRepository extends JDBConnection {
 	 */
 	public int delete(String productId) {
 		int result = 0;
-		
+		String sql = " DELETE FROM product "
+					+ " WHERE product_id = ? ";
+		try {
+			psmt = con.prepareStatement(sql);
+	        psmt.setString(1, productId);
+
+	        result = psmt.executeUpdate();
+	        
+			if(result > 0)	return result;
+			else	return 0;
+		} catch (SQLException e) {
+			System.err.println("상품 삭제 중, 에러 발생!");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public int deleteCart(String productId) {
+		int result = 0;
 		String sql = " DELETE FROM product "
 					+ " WHERE product_id = ? ";
 		

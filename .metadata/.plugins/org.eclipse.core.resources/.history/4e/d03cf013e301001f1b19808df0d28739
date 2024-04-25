@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Shop</title>
+	<jsp:include page="/layout/meta.jsp" />
+	<jsp:include page="/layout/link.jsp" />
+</head>
+<body>
+	<jsp:include page="/layout/header.jsp" />
+	
+	<div class="px-4 py-5 mt-5 text-center">
+		<h1 class="display-5 fw-bold text-body-emphasis">배송 정보</h1>
+	</div>
+	<!-- 배송 정보 -->
+	<div class="container shop p-5 mb-5" >
+		<form action="order.jsp" name="DeliveryForm" method="post" >
+		
+			<div class="input-group mb-3 row">
+				<label class="input-group-text col-md-4" id="">성명</label>
+				<input type="text" class="form-control col-md-8" name="name" required>
+			</div>
+			
+			<div class="input-group mb-3 row">
+				<label class="input-group-text col-md-4" id="">배송일</label>
+				<input type="text" class="form-control col-md-8" name="deliveryDate" required>
+			</div>
+			
+			<div class="input-group mb-3 row">
+				<label class="input-group-text col-md-4" id="">국가명</label>
+				<input type="text" class="form-control col-md-8" name="nation" required>
+			</div>
+			
+			<div class="input-group mb-3 row">
+				<label class="input-group-text col-md-4" id="">우편번호</label>
+				<input type="text" class="form-control col-md-8" name="zipCode" required>
+			</div>
+			
+			<div class="input-group mb-3 row">
+				<label class="input-group-text col-md-4" id="">주소</label>
+				<input type="text" class="form-control col-md-8" name="address" required>
+			</div>
+			
+			<div class="input-group mb-3 row">
+				<label class="input-group-text col-md-4" id="">전화번호</label>
+				<input type="text" class="form-control col-md-8" name="phone" required>
+			</div>
+			
+			<div class="d-md-flex justify-content-between mt-5 mb-5">
+			    <div>
+			        <a href="cart.jsp" class="btn btn-lg btn-success">이전</a>
+			        <a href="../index.jsp" class="btn btn-lg btn-danger">취소</a>
+			    </div>
+			    <div>
+			        <input type="submit" class="btn btn-lg btn-primary" value="등록" />
+			    </div>
+			</div>	
+		</form>
+	</div>
+	<jsp:include page="/layout/footer.jsp" />
+	<jsp:include page="/layout/script.jsp" />
+</body>
+</html>

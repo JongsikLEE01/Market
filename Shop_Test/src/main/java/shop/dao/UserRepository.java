@@ -16,10 +16,8 @@ public class UserRepository extends JDBConnection {
 	 */
 	public int insert(User user) {
 		int result = 0;
-		
 		String sql = " INSERT INTO `user` VALUES "
 					+ " (?, ?, ?, ?, ?, ?, ?, ?, SYSDATE()) ";
-		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString( 1, user.getId() );
@@ -48,11 +46,9 @@ public class UserRepository extends JDBConnection {
 	 */
 	public User login(String id, String pw) {
 		User user = new User();
-		
 		String sql = " SELECT * "
 				   + " FROM `user` "
 				   + " WHERE id = ? AND password = ? ";
-		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString( 1, id );
@@ -82,11 +78,9 @@ public class UserRepository extends JDBConnection {
 	 */
 	public User getUserById(String id) {
 		User user = new User();
-		
 		String sql = " SELECT *"
 					+ " FROM `user` "
 					+ " WHERE id = ? ";
-		
 		try {
 			psmt = con.prepareStatement(sql);
 	        psmt.setString(1, id);
@@ -121,7 +115,6 @@ public class UserRepository extends JDBConnection {
 	 */
 	public int update(User user) {
 		int result = 0;
-		
 		String sql = " UPDATE `user` "
 				   + " SET id = ?, gender = ?, birth = ? "
 				   + " , mail = ?, phone = ?, address = ? "
@@ -141,7 +134,6 @@ public class UserRepository extends JDBConnection {
 			psmt.setString(9, user.getPhone());
 			
 			result = psmt.executeUpdate();
-			
 		}catch (SQLException e) {
 			System.err.println("회원 정보 수정 중, 에러 발생!");
 			e.printStackTrace();
@@ -160,7 +152,6 @@ public class UserRepository extends JDBConnection {
 		int result = 0;
 		String sql = " DELETE FROM `user` "
 					+ " WHERE id = ? ";
-		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString(1, id);
@@ -180,13 +171,10 @@ public class UserRepository extends JDBConnection {
 	public String refreshToken(String userId) {
 	    PersistentLogin persistentLogin = selectToken(userId);
 	    String token = null;
-	    if (persistentLogin == null) {
-	        // 토큰이 없는 경우, 삽입
-	    	token = insertToken(userId);
-	    } else {
-	        // 토큰이 있는 경우, 갱신
+	    if (persistentLogin == null) 
+	        token = insertToken(userId);
+	    else
 	    	token =  updateToken(userId);
-	    }
 	    return token;
 	}
 
