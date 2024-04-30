@@ -10,6 +10,7 @@
 </head>
 <body>   
 	<% 
+		
 		String root = request.getContextPath();
 		String error = request.getParameter("error");
 		
@@ -49,7 +50,8 @@
 	<main class="form-signin login-box w-100 m-auto">
 	  <form action="login_pro.jsp" method="post">
 	    <div class="form-floating">
-	      <input type="text" class="form-control" id="floatingInput" name="id" value="<%= userId %>" placeholder="아이디" autofocus>
+	      <input type="text" class="form-control" id="floatingInput" name="id" 
+	      		 value="<%= userId %>" placeholder="아이디" autofocus>
 	      <label for="floatingInput">아이디</label>
 	    </div>
 	    <div class="form-floating">
@@ -62,7 +64,8 @@
 	    	  <%
 	    	  	if( rememberId != null && rememberId.equals("on") ) {
 	    	  %>
-			      <input class="form-check-input" type="checkbox" name="remember-id" id="flexCheckDefault1" checked>
+			      <input class="form-check-input" type="checkbox" name="remember-id" id="flexCheckDefault1"
+			      		 checked>
 			  <%
 	    	  	} else {
 	    	  %>  
@@ -99,11 +102,3 @@
 	<jsp:include page="/layout/script.jsp" />
 </body>
 </html>
-
-
-
-
-
-
-
-

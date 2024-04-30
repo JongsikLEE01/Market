@@ -5,9 +5,7 @@
 <%@page import="shop.dao.UserRepository"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <%
-	
 	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
 	
@@ -71,10 +69,11 @@
 	
 	if (loginUser != null) {
 	    session.setAttribute("loginId", id);  // 로그인 성공 시 세션에 ID 저장
+	    session.setAttribute("cartList", null); // 로그인 시 기존 담겨있던 장바구니 초기화
+
 	    response.sendRedirect("complete.jsp?msg=0");  // 성공 페이지로 리다이렉션
 	} else {
     	response.sendRedirect("login.jsp?error=0");  // 로그인 실패 시 에러 코드와 함께 리다이렉션
 	}
 	// return; // 중요: 리다이렉트 후에는 추가적인 작업을 방지하기 위해 메서드를 종료
-
 %>

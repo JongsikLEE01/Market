@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="org.apache.commons.io.FilenameUtils"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -14,77 +13,88 @@
 <%@page import="java.util.List"%>
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 <%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 	//파일 저장 경로 및 크기 설정
-	String path = application.getRealPath("/static/img");
-	int fileSize = 10 * 1024 * 1024;  // 최대 10 MB
+	String saveDirectory = application.getRealPath("/static/img");
+	int maxPostSize = 10 * 1024 * 1024;  // 최대 10 MB
 	
-	// 파일 업로드 요청을 파싱.
+	// 파일 업로드 요청을 파싱합니다.
 	FileItemFactory factory = new DiskFileItemFactory();
 	ServletFileUpload upload = new ServletFileUpload(factory);
-	upload.setSizeMax(fileSize);
+	upload.setSizeMax(maxPostSize);
 	
 	try {
 	    List<FileItem> items = upload.parseRequest(request);
 	    Map<String, String> formFields = new HashMap<String, String>();
 	
 	    String fileName = "";
-	    // 폼 필드를 반복, 데이터 처리
+	    // 폼 필드를 반복하여 데이터 처리
 	    for (FileItem item : items) {
-	        if (item.isFormField())
-	            // 일반 요소
+	        if (item.isFormField()) {
+	            // 일반 필드
 	            formFields.put(item.getFieldName(), item.getString("UTF-8"));
-	        else {
-	            // 파일
+	        } else {
+	            // 파일 필드
 	            fileName = item.getName();
 	            if (fileName != null && !fileName.isEmpty()) {
 	                fileName = FilenameUtils.getName(fileName);
-	                File uploadedFile = new File(path, fileName);
+	                File uploadedFile = new File(saveDirectory, fileName);
 	                item.write(uploadedFile);
 	            }
 	        }
 	    }
 	
-		String productId = formFields.get("productId");						// 상품ID
-		String name = formFields.get("name");								// 상품명
-		Integer unitPrice = Integer.parseInt(formFields.get("unitPrice")); 	// 가격(단가)
-		String description = formFields.get("description");					// 설명
-		String manufacturer = formFields.get("manufacturer");				// 제조 업체
-		String category = formFields.get("category");		 				// 카테고리
-		long unitsInStock = Long.parseLong(formFields.get("unitsInStock")); // 재고 수
-		String condition = formFields.get("condition");						// 상태
-		 
-		Product product = new Product();
+    // 데이터베이스에 추가하기 위한 변수 선언들
+    // 일반 폼 데이터 처리
+	String productId = formFields.get("productId");	// 상품ID
+	String name = formFields.get("name");				// 상품명
+	Integer unitPrice = Integer.parseInt(formFields.get("unitPrice")); // 가격(단가)
+	String description = formFields.get("description");// 설명
+	String manufacturer = formFields.get("manufacturer");	// 제조 업체
+	String category = formFields.get("category");		 // 카테고리
+	long unitsInStock = Long.parseLong(formFields.get("unitsInStock")); // 재고 수
+	String condition = formFields.get("condition");		// 상태
+	 
+	Product product = new Product();
+
+	product.setProductId(productId);
+	product.setName(name);
+	product.setUnitPrice(unitPrice);
+	product.setDescription(description);
+	product.setManufacturer(manufacturer);
+	product.setCategory(category);
+	product.setUnitsInStock(unitsInStock);
+	product.setCondition(condition);
+    product.setFile("/static/img/" + fileName);
+
+	ProductRepository productDao = new ProductRepository();
 	
-		product.setProductId(productId);
-		product.setName(name);
-		product.setUnitPrice(unitPrice);
-		product.setDescription(description);
-		product.setManufacturer(manufacturer);
-		product.setCategory(category);
-		product.setUnitsInStock(unitsInStock);
-		product.setCondition(condition);
+    // 상품 이미지를 업로드하지 않고, 기존의 것을 사용해야 하는 경우
+	// 기존에 사용하던 이미지 경로를 조회
+	if (fileName == "") {
+	    // 데이터베이스에서 기존 상품 정보를 조회
+	    Product existingProduct = productDao.getProductById(productId);
+	    if (existingProduct != null && existingProduct.getFile() != null) {
+	        product.setFile(existingProduct.getFile());
+	    } else {
+	        // 기존 이미지 정보가 없는 경우 기본 이미지 경로 설정 또는 처리
+	        product.setFile("/static/img/no-image.jpg");
+	    }
+	} else {
+	    // 새로운 파일 경로 설정
 	    product.setFile("/static/img/" + fileName);
+	}
 	
-		ProductRepository productDAO = new ProductRepository();
+	int result = productDao.update(product);
 		
-		// 기존에 이미지 경로를 조회
-		if (fileName == "") {
-		    Product existingProduct = productDAO.getProductById(productId);
-		    if (existingProduct != null && existingProduct.getFile() != null)
-		        product.setFile(existingProduct.getFile());
-		    else 
-		    	product.setFile("/static/img/no-image.jpg"); 
-		} else 
-			product.setFile("/static/img/" + fileName);
-		
-		int result = productDAO.update(product);
-			
-	    if (result > 0){  
-	    	out.println("<script>alert('상품이 성공적으로 수정되었습니다.');</script>");
-	    	response.sendRedirect("editProducts.jsp");
-    	}else
-    		out.println("<script>alert('상품 수정에 실패했습니다.');history.back();</script>");
+    if (result > 0) {
+        out.println("<script>alert('상품이 성공적으로 수정되었습니다.');location.href='editProducts.jsp';</script>");
+    } else {
+        out.println("<script>alert('상품 수정에 실패했습니다.');history.back();</script>");
+    }
+    
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}

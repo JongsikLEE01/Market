@@ -12,12 +12,14 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 회원 등록
 	 * @param user
-	 * @return result
+	 * @return
 	 */
 	public int insert(User user) {
 		int result = 0;
+		
 		String sql = " INSERT INTO `user` VALUES "
 					+ " (?, ?, ?, ?, ?, ?, ?, ?, SYSDATE()) ";
+		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString( 1, user.getId() );
@@ -42,13 +44,15 @@ public class UserRepository extends JDBConnection {
 	 * 로그인을 위한 사용자 조회
 	 * @param id
 	 * @param pw
-	 * @return user
+	 * @return
 	 */
 	public User login(String id, String pw) {
 		User user = new User();
+		
 		String sql = " SELECT * "
 				   + " FROM `user` "
 				   + " WHERE id = ? AND password = ? ";
+		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString( 1, id );
@@ -74,13 +78,15 @@ public class UserRepository extends JDBConnection {
 	 * 로그인을 위한 사용자 조회
 	 * @param id
 	 * @param pw
-	 * @return user
+	 * @return
 	 */
 	public User getUserById(String id) {
 		User user = new User();
+		
 		String sql = " SELECT *"
 					+ " FROM `user` "
 					+ " WHERE id = ? ";
+		
 		try {
 			psmt = con.prepareStatement(sql);
 	        psmt.setString(1, id);
@@ -111,10 +117,11 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 회원 수정
 	 * @param user
-	 * @return result
+	 * @return
 	 */
 	public int update(User user) {
 		int result = 0;
+		
 		String sql = " UPDATE `user` "
 				   + " SET id = ?, gender = ?, birth = ? "
 				   + " , mail = ?, phone = ?, address = ? "
@@ -134,6 +141,7 @@ public class UserRepository extends JDBConnection {
 			psmt.setString(9, user.getPhone());
 			
 			result = psmt.executeUpdate();
+			
 		}catch (SQLException e) {
 			System.err.println("회원 정보 수정 중, 에러 발생!");
 			e.printStackTrace();
@@ -146,12 +154,13 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 회원 삭제
 	 * @param id
-	 * @return result
+	 * @return
 	 */
 	public int delete(String id) {
 		int result = 0;
 		String sql = " DELETE FROM `user` "
 					+ " WHERE id = ? ";
+		
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString(1, id);
@@ -171,10 +180,13 @@ public class UserRepository extends JDBConnection {
 	public String refreshToken(String userId) {
 	    PersistentLogin persistentLogin = selectToken(userId);
 	    String token = null;
-	    if (persistentLogin == null) 
-	        token = insertToken(userId);
-	    else
+	    if (persistentLogin == null) {
+	        // 토큰이 없는 경우, 삽입
+	    	token = insertToken(userId);
+	    } else {
+	        // 토큰이 있는 경우, 갱신
 	    	token =  updateToken(userId);
+	    }
 	    return token;
 	}
 
@@ -183,7 +195,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 토큰 정보 조회
 	 * @param userId
-	 * @return persistentLogin
+	 * @return
 	 */
 	public PersistentLogin selectToken(String userId) {
 	    String sql = "SELECT * FROM persistent_logins WHERE user_id = ?";
@@ -213,7 +225,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 토큰 정보 조회 - 토큰으로
 	 * @param token
-	 * @return persistentLogin
+	 * @return
 	 */
 	public PersistentLogin selectTokenByToken(String token) {
 	    String sql = "SELECT * FROM persistent_logins WHERE token = ?";
@@ -245,7 +257,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 자동 로그인 토큰 생성
 	 * @param userId
-	 * @return token
+	 * @return
 	 */
 	public String insertToken(String userId) {
 		 int result = 0;
@@ -268,7 +280,7 @@ public class UserRepository extends JDBConnection {
 	/**
 	 * 자동 로그인 토큰 갱신
 	 * @param userId
-	 * @return token
+	 * @return
 	 */
 	public String updateToken(String userId) {
 	    int result = 0;
@@ -293,7 +305,7 @@ public class UserRepository extends JDBConnection {
 	 * 토큰 삭제
 	 * - 로그아웃 시, 자동 로그인 풀림
 	 * @param userId
-	 * @return result
+	 * @return
 	 */
 	public int deleteToken(String userId) {
 	    int result = 0;
@@ -311,4 +323,22 @@ public class UserRepository extends JDBConnection {
 	    System.out.println("자동 로그인 정보 " + result + "개의 데이터가 삭제되었습니다.");
 	    return result;
 	}
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

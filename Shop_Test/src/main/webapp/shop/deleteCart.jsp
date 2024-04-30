@@ -1,7 +1,15 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="shop.dto.Product"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@page import="shop.dao.ProductRepository"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Delete Product from Cart</title>
+</head>
 <%
     String productId = request.getParameter("productId");
     List<Product> cartList = (List<Product>) session.getAttribute("cartList");
@@ -11,30 +19,36 @@
         return;
     }
 
-    boolean result = false; // ¼º°øÀûÀ¸·Î »èÁ¦µÇ¾ú´ÂÁö È®ÀÎÇÏ´Â ÇÃ·¡±×
+    boolean result = false; // ì„±ê³µì ìœ¼ë¡œ ì‚­ì œë˜ì—ˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í”Œë˜ê·¸
 
     if (productId != null && !productId.isEmpty()) {
-        // productId°¡ Á¦°øµÈ °æ¿ì Æ¯Á¤ »óÇ° »èÁ¦
+        // productIdê°€ ì œê³µëœ ê²½ìš° íŠ¹ì • ìƒí’ˆ ì‚­ì œ
         Product toRemove = null;
         for (Product product : cartList) {
-            // productId°¡ nullÀÌ ¾Æ´Ï°í, ¿äÃ»¹ŞÀº productId¿Í ÀÏÄ¡ÇÏ´Â °æ¿ì¸¸ °Ë»ç
+            // productì˜ productIdê°€ nullì´ ì•„ë‹ˆê³ , ìš”ì²­ë°›ì€ productIdì™€ ì¼ì¹˜í•˜ëŠ” ê²½ìš°ë§Œ ê²€ì‚¬
             if (product.getProductId() != null && product.getProductId().equals(productId)) {
                 toRemove = product;
                 break;
             }
         }
-        if (toRemove != null)
+        if (toRemove != null) {
             result = cartList.remove(toRemove);
+        }
     } else {
-        // ÀüÃ¼ ¸ñ·Ï »èÁ¦
+        // productIdê°€ ì œê³µë˜ì§€ ì•Šì€ ê²½ìš° ì „ì²´ ëª©ë¡ ì‚­ì œ
         cartList.clear();
         result = cartList.isEmpty();
     }
- 	// º¯°æµÈ Àå¹Ù±¸´Ï¸¦ ´Ù½Ã ¼¼¼Ç¿¡ ÀúÀå
-    session.setAttribute("cartList", cartList);
 
-    if (result)
+    session.setAttribute("cartList", cartList); // ë³€ê²½ëœ ì¥ë°”êµ¬ë‹ˆë¥¼ ë‹¤ì‹œ ì„¸ì…˜ì— ì €ì¥
+
+    if (result) {
         response.sendRedirect("cart.jsp");
-    else
-        out.println("<script>alert('Á¦Ç° »èÁ¦ Áß ¿¡·¯°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.'); history.back();</script>");
+    } else {
+        out.println("<script>alert('ì œí’ˆ ì‚­ì œ ì¤‘ ì—ëŸ¬ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.'); history.back();</script>");
+    }
 %>
+<body>
+
+</body>
+</html>

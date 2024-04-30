@@ -7,21 +7,16 @@ import shop.dto.Product;
 public class ProductIORepository extends JDBConnection {
 
 	/**
-	 * 입출고 등록
+	 * 상품 입출고 등록
 	 * @param product
 	 * @param type
-	 * @return result
+	 * @return
 	 */
 	public int insert(Product product) {
 		int result = 0;
-		String sql = " INSERT INTO product_io ( "
-				+ " product_id "
-				+ ", order_no "
-				+ ", amount "
-				+ ", type "
-				+ ", io_date "
-				+ ", user_id ) "
-				+ " VALUES( ?, ?, ?, ?, now(), ?) ";
+		String sql = " INSERT INTO product_io (product_id, order_no, "
+				   + " amount, type, io_date, user_id) "
+				   + " VALUES( ?, ?, ?, ?, now(), ?) ";
 
 		try {
 			psmt = con.prepareStatement(sql);
@@ -33,11 +28,16 @@ public class ProductIORepository extends JDBConnection {
 
 			result = psmt.executeUpdate();
 			
-			if(result > 0) return result;
+			if(result > 0) {
+	            return result;
+			} 
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("상품 등록 중, 에러 발생");
+			System.err.println("상품 등록 중 에러가 발생하였습니다.");
 		}
-		return result;
+			return result;
 	}
+	
+
 }

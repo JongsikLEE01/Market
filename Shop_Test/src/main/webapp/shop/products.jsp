@@ -1,33 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="shop.dto.Product"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
      
 <!DOCTYPE html>
 <html>
-<head>	
+<head>
 	<meta charset="UTF-8">
-	<title>Shop</title>
+	<title>Products</title>
 	<jsp:include page="/layout/meta.jsp" />
 	<jsp:include page="/layout/link.jsp" />
-	<jsp:include page="/layout/script.jsp" />
+
 </head>
 <% 
 	String root = request.getContextPath(); 
-
-	// 데이터 베이스에서 상품 목록
+	ProductRepository productDao = new ProductRepository();
 	List<Product> productList = new ArrayList<Product>();
-	List<Product> keyProductList = new ArrayList<Product>();
-	ProductRepository productDAO = new ProductRepository();
 	
-	productList = productDAO.list();
-	
-	// 키워드
+	//상단 검색 메뉴
 	String keyword = request.getParameter("keyword");
-	keyProductList = productDAO.list(keyword);
+	
+	// keyword가 널이면 그냥 전체 상품 보여주고, 아니면 keyword로 조회한거 보여주면 될듯 ??
+	if(keyword != null && !keyword.trim().isEmpty()) {
+		productList = productDao.list(keyword);
+		
+		// 제품들 정보 이외 이상한 값들이 들어가면 그냥 전체 조회 ?
+		if(productList.size() == 0) {
+			productList = productDao.list();
+		}
+
+	} else {
+		productList = productDao.list();
+	}
+	
+	// 데이터 베이스에서 상품 목록 가져와서 그리드로 뿌려야될듯
+	// response.?????
 %>
 <body>   
 	<jsp:include page="/layout/header.jsp" />
@@ -40,55 +51,32 @@
 				<a href="<%= root %>/shop/editProducts.jsp" class="btn btn-success btn-lg px-3 gap-2">상품 편집</a>
 				<a href="<%= root %>/shop/cart.jsp" class="btn btn-warning btn-lg px-3 gap-2">장바구니</a>
 			</div>
+			<!-- cardView 사용? -->
             <div class="container mt-5">
 			    <div class="row">
-			        <%
-				    	if(keyword != null && !keyword.equals("") ){
-				    %>		
-			        <c:forEach var="product" items="<%= keyProductList %>">
+			        <%-- 서버 측 출력 --%>
+			        <c:forEach var="product" items="<%= productList %>">
 			            <div class="col-md-4 mb-3 px-2">
 			                <div class="card" style="width: 14rem;">
 			                    <img class="card-img-top" src="<%= request.getContextPath() %>${product.file}" alt="${product.name}">
 			                    <div class="card-body">
-			                        <h5 class="card-title">${product.name}</h5>
+									<h5 class="card-title" style="font-weight: bold;">${product.name}</h5>
 			                        <p class="card-text">${product.description}</p>
-									<p class="card-price text-end">￦ ${product.unitPrice}</p>
+									<p class="card-price text-end" style="font-weight: bold;">￦ ${product.unitPrice}</p>
 			                        
 			                        <div class="d-flex justify-content-between mt-1 mb-1">
-										<a href="cart.jsp" class="btn btn-white btn-sm text-primary border-primary"><span class="material-symbols-outlined">shopping_bag</span></a>
-										<button class="btn btn-white btn-sm text-primary border-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-   										 onclick="fillModal(${product.unitPrice}, '${product.description}')">상세 정보</button>
-									</div>	
-			                    </div>
-			                </div>
-			            </div>
-			        </c:forEach>
-				    <%
-				    	}else{
-			        %>
-			        <c:forEach var="product" items="<%= productList  %>">
-			            <div class="col-md-4 mb-3 px-2">
-			                <div class="card" style="width: 14rem;">
-			                    <img class="card-img-top" src="<%= request.getContextPath() %>${product.file}" alt="${product.name}">
-			                    <div class="card-body">
-			                        <h5 class="card-title">${product.name}</h5>
-			                        <p class="card-text">${product.description}</p>
-									<p class="card-price text-end">￦ ${product.unitPrice}</p>
-			                        
-			                        <div class="d-flex justify-content-between mt-1 mb-1">
-										<a href="cart.jsp?productId=${product.productId}" class="btn btn-white btn-sm text-primary border-primary">🛒</a>
+										<a href="cart.jsp?productId=${product.productId}" class="btn btn-white btn-sm text-primary material-symbols-outlined border-primary">shopping_bag</a>
 										<a href="product.jsp?productId=${product.productId}" class="btn btn-white btn-sm text-primary border-primary">상세 정보</a>
 									</div>	
 			                    </div>
 			                </div>
 			            </div>
 			        </c:forEach>
-			        <%
-				    	}
-			        %>
 				</div>
 			</div>
 		</div>
 	</div>
+	<jsp:include page="/layout/footer.jsp" />
+	<jsp:include page="/layout/script.jsp" />
 </body>
 </html>

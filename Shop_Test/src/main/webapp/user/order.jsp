@@ -12,11 +12,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Shop</title>
-	<jsp:include page="/layout/meta.jsp" />
-	<jsp:include page="/layout/link.jsp" />
+	<jsp:include page="/layout/meta.jsp" /> <jsp:include page="/layout/link.jsp" />
 </head>
 <body>   
 	<% 
+
+		// ...
 		String root = request.getContextPath();
 		String loginId = (String) session.getAttribute("loginId");
 
@@ -27,24 +28,6 @@
 		
 		UserRepository userDAO = new UserRepository();
 		User loginUser = userDAO.getUserById(loginId);	
-		
-		// 주문 내역 목록 가져오기
-		String orderPhone = (String) session.getAttribute("orderPhone");
-		String orderPw = (String) session.getAttribute("orderPw");
-		
-		OrderRepository orderDAO = new OrderRepository();
-		
-		int orderCount = 0;
-		List<Product> productList = new ArrayList<Product>();
-		
-		if(login) {
-			 productList = orderDAO.list(loginId);
-			 orderCount = orderDAO.list(loginId).size();		
-		}
-		else {
-			productList = orderDAO.list(orderPhone, orderPw);
-			orderCount = orderDAO.list(orderPhone, orderPw).size();		
-		}
 	%>
 	
 	<jsp:include page="/layout/header.jsp" />
@@ -53,20 +36,28 @@
 		<div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
 			<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
 			    <ul class="nav nav-pills flex-column mb-auto">
-			    <!-- 로그인 확이 -->
-			    <% if( login ) { %>
-			    <li class="nav-item">
-			    	<a href="<%= root %>/user/index.jsp" class="nav-link link-body-emphasis"> 마이 페이지</a>
-			    </li>
-			    <li class="nav-item">
-			        <a href="<%= root %>/user/update.jsp" class="nav-link link-body-emphasis">회원정보 수정</a>
-			    </li>
-			    <% }  %>
-			    <li>
-			        <a href="#" class="nav-link active" aria-current="page" >주문내역</a>
-			    </li>
-			</ul>
-			</div>
+			      <!-- 로그인 시 -->
+			      <% if( login ) { %>
+			      <li class="nav-item">
+			        <a href="<%= root %>/user/index.jsp" class="nav-link link-body-emphasis">
+			          마이 페이지
+			        </a>
+			      </li>
+			      <li class="nav-item">
+			        <a href="<%= root %>/user/update.jsp" class="nav-link link-body-emphasis">
+			          회원정보 수정
+			        </a>
+			      </li>
+			      <% }  %>
+			      
+			      <li>
+			        <a href="#" class="nav-link active" aria-current="page" >
+			          주문내역
+			        </a>
+			      </li>
+			    </ul>
+			    <hr>
+			  </div>
 		</div>
 		
 		<div class="col-md-9 ms-sm-auto col-lg-10 p-0 m-0">
@@ -78,7 +69,8 @@
 					<% } %>
 				</div>
 			</div>
-			<!-- 비회원 주문 확인 -->
+			
+			<!-- 주문 내역 영역 -->
 			<div class="container shop m-auto mb-5">
 					<form action="<%= root %>/user/order_pro.jsp" method="post">
 					<% if( !login ) { %>
@@ -103,8 +95,14 @@
 						</div>
 					<% } %>
 					</form>
-				<% if( login || (orderPhone != null && !orderPhone.isEmpty())) { %>
-				<!-- 주문 내역 -->
+				<% 
+					// 위에 폼에서 먼저 번호로 조회하고, 세션 등록?
+					// orderPhone은 비회원 조회 시 등록된 세션을 가져와서 사용 해야 될듯??
+					String orderPhone = (String) session.getAttribute("orderPhone");
+					String orderPw = (String) session.getAttribute("orderPw");
+				%>
+				<% if( login || ( orderPhone != null && !orderPhone.isEmpty() ) ) { %>
+				<!-- 주문 내역 목록 -->
 				<table class="table table-striped table-hover table-bordered text-center align-middle">
 					<thead>
 						<tr class="table-primary">
@@ -118,9 +116,23 @@
 					</thead>
 					<tbody>
 						<%	
+							OrderRepository orderDao = new OrderRepository();
+							
+							int orderCount = 0;
+							List<Product> orderList = new ArrayList<Product>();
+							
+								if(login) {
+									 orderList = orderDao.list(loginId);
+									 orderCount = orderDao.list(loginId).size();		
+								}
+								else {
+									orderList = orderDao.list(orderPhone, orderPw);
+									orderCount = orderDao.list(orderPhone, orderPw).size();		
+								}
+							
 							int sum = 0;
 							for(int i = 0 ; i < orderCount ; i++) {
-								Product product = productList.get(i);
+								Product product = orderList.get(i);
 								int total = product.getUnitPrice() * product.getQuantity();
 								sum += total;
 						%>
@@ -135,10 +147,11 @@
 						<%
 							}
 						%>
+						
 					</tbody>
 					<tfoot>
 						<%
-							if( productList.isEmpty() ) {
+							if( orderList.isEmpty() ) {
 						%>
 						<tr>
 							<td colspan="6">추가된 상품이 없습니다.</td>	
@@ -156,12 +169,52 @@
 						%>
 					</tfoot>
 				</table>
+				
 				<% } %>
 			</div>
 			<jsp:include page="/layout/footer.jsp" />
 		</div>
 	</div>
-	
 	<jsp:include page="/layout/script.jsp" />
+	<script>
+		
+		let form = document.updateForm
+		
+		// 성별 선택
+		let tempGender = document.getElementById('temp-gender')
+		let radioFemale = document.getElementById('gender-female')
+		let radioMale = document.getElementById('gender-male')
+		// alert(tempGender.value)
+		if( tempGender.value == '남' )		radioMale.checked = true
+		if( tempGender.value == '여' )		radioFemale.checked = true
+		
+		
+		// 생일 월 (select) 선택
+		let tempMonth = document.getElementById('temp-month')
+		let selectMonth = form.month
+		selectMonth.value = tempMonth.value
+		
+		
+		// 메일 도메인 (select) 선택
+		let tempEmail2 = document.getElementById('temp-email2')
+		let selectEmail2 = form.email2
+		selectEmail2.value = tempEmail2.value
+		
+		
+		// 탈퇴 체크
+		function alertDel() {
+
+			let form = document.updateForm
+
+			let check = confirm('정말 탈퇴하시겠습니까?')
+
+			if( check ) {
+				form.action = 'delete.jsp'
+				form.submit()
+			}
+
+		}
+	
+	</script>
 </body>
 </html>

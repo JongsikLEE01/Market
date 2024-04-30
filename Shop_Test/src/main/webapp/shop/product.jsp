@@ -1,14 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="shop.dto.Product"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+     
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Shop</title>
+	<title>Products</title>
 	<jsp:include page="/layout/meta.jsp" />
 	<jsp:include page="/layout/link.jsp" />
 
@@ -16,8 +18,8 @@
 <% 
 	String root = request.getContextPath(); 
 	String productId = request.getParameter("productId");
-	ProductRepository productDAO = new ProductRepository();
-	Product product = productDAO.getProductById(productId);
+	ProductRepository productDao = new ProductRepository();
+	Product product = productDao.getProductById(productId);
 	
 %>
 <body>   
@@ -31,12 +33,14 @@
             </div>
             <div class="container mt-5">
 			    <div class="row">
+			        <!-- 이미지를 위한 열 -->
 			        <div class="col-md-6">
 			            <img class="card-img-top" src="<%= root %><%= product.getFile() %>" alt="${product.name}" style="width:100%; max-width: 300px;">
 			        </div>
+			        <!-- 정보를 위한 열 -->
 			        <div class="col-md-6">
 			            <h5 class="card-title" style="font-weight: bold;"> <%= product.getName() %></h5> <br>
-			            <p class="card-text text-start"> 상품ID : &nbsp;&nbsp;&nbsp;&nbsp; <%= product.getProductId() %></p> <hr>
+			            <p class="card-text text-start"> 상품 ID : &nbsp;&nbsp;&nbsp;&nbsp; <%= product.getProductId() %></p> <hr>
 			            <p class="card-text text-start">  제조사 : &nbsp;&nbsp;&nbsp;&nbsp; <%= product.getManufacturer() %> </p> <hr>
 			            <p class="card-text text-start">  분류 :  &nbsp;&nbsp;&nbsp;&nbsp; <%= product.getCategory() %> </p> <hr>
 			            <p class="card-text text-start">  상태 :  &nbsp;&nbsp;&nbsp;&nbsp; <%= product.getCondition() %> </p> <hr>

@@ -1,8 +1,0 @@
-<%@page import="shop.dao.ProductRepository"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%
-	String productId = request.getParameter("productId");
-
-	ProductRepository productDAO = new ProductRepository();
-%>

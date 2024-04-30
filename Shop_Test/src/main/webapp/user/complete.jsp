@@ -21,7 +21,7 @@
 		<h1 class="display-5 fw-bold text-body-emphasis">회원 정보</h1>
 		
 	</div>
-	<!-- 회원 가입,수정,탈퇴 완료 -->
+	<!-- 회원 가입/수정/탈퇴 완료 -->
 	<div class="container mb-5">
 		<%
 			String loginId = (String) session.getAttribute("loginId");
@@ -56,6 +56,7 @@
 		%>
 		<br>
 		<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+				<!-- a 태그 버튼 -->
 				<a href="<%= request.getContextPath() %>" class="btn btn-primary btn-lg px-4 gap-3">메인 화면</a>
 		</div>
 	</div>
@@ -64,7 +65,6 @@
 	<jsp:include page="/layout/script.jsp" />
 </body>
 </html>
-
 
 
 

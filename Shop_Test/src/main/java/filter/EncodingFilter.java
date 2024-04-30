@@ -36,7 +36,4 @@ public class EncodingFilter implements Filter {
 	public void destroy() {
 		// 필터가 소멸될 때 실행되는 메소드
 	}
-
-	
-
 }

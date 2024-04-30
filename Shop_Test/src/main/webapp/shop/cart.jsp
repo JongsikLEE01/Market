@@ -1,13 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="shop.dao.OrderRepository"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="shop.dao.ProductRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="shop.dto.Product"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Shop</title>
+	<title>Products</title>
 	<jsp:include page="/layout/meta.jsp" />
 	<jsp:include page="/layout/link.jsp" />
 </head>
@@ -15,45 +18,50 @@
 	String root = request.getContextPath(); 
 	String productId = request.getParameter("productId");
 	
-	ProductRepository productDAO = new ProductRepository();
-
+	ProductRepository productDao = new ProductRepository();
+   // 세션에 상품 리스트를 관리하는 'cart' 속성이 있는지 확인
     List<Product> cartList = (List<Product>) session.getAttribute("cartList");
    
     if (productId != null) {
-        // 상품 정보 조회
-        Product product = productDAO.getProductById(productId);
+        // 상품 정보를 조회
+        Product product = productDao.getProductById(productId);
         if (product != null) {
             if (cartList == null) {
+                // 처음으로 상품을 추가하는 경우, 'cart' 속성을 새로 생성
                 cartList = new ArrayList<Product>();
                 session.setAttribute("cartList", cartList);
             }
             boolean duplicate = false;
             for (Product item : cartList) {
-            	// 중복확인
-                if (item.getProductId().equals(productId)) {  
+                if (item.getProductId().equals(productId)) {  // 상품 ID를 이용한 중복 확인
                     duplicate = true;
-                    item.setQuantity(item.getQuantity() + 1); 
-                    break;
+                    item.setQuantity(item.getQuantity() + 1);  // 해당 상품의 수량만 증가
+                    break;  // 중복을 찾았으므로 루프 탈출
                 }
             }
             
             if (!duplicate) {
-                product.setQuantity(1);
+                product.setQuantity(1);  // 새 상품이면 수량을 1로 설정
                 cartList.add(product);
             }
+            // 사용자를 장바구니 페이지로 리디렉트
             response.sendRedirect("products.jsp");
-	    } else
+	    } else {
+	        // 상품이 존재하지 않는 경우, 오류 처리
 	        response.sendRedirect("error.jsp");
+	    }
 	}
+	
 %>
-<body>     
+<body>   
+	<body>   
     <jsp:include page="/layout/header.jsp" />
     <div class="px-4 py-5 my-5 text-center">
         <h1 class="display-5 fw-bold text-body-emphasis">장바구니</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">장바구니 목록 입니다.</p>
             <div class="container mt-5">
-			    <!-- 상품 목록 -->
+			    <!-- 장바구니 상품 목록 -->
 			    <table class="table table-striped table-hover table-bordered text-center align-middle">
 			        <thead class="table-primary">
 			            <tr>
@@ -85,7 +93,8 @@
 			                    </form>
 			                </td>
 			            </tr>
-			            <% } %>
+			            <% }
+			            %>
 			            <tr>
 			                <td colspan="3">총액</td>
 			                <td><%= sum %></td>
@@ -99,7 +108,7 @@
 			        </tbody>
 			    </table>
 			</div>
-			<!-- 주문 -->
+			<!-- 주문하기 버튼 -->
 			<div class="row justify-content-between">
 			    <div class="col-auto">
 			        <a href="<%= root %>/shop/deleteCart.jsp" class="btn btn-danger btn-lg">전체삭제</a>
@@ -124,5 +133,6 @@
     </script>
     <jsp:include page="/layout/footer.jsp" />
     <jsp:include page="/layout/script.jsp" />
+</body>
 </body>
 </html>
