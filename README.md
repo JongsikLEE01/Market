@@ -1,5 +1,5 @@
 # 쇼핑몰 프로젝트
-ALOHA CLASS 더조은컴퓨터아카데미 - JSP 평가 - 쇼핑몰 초기 프로젝트
+더조은컴퓨터아카데미 - JSP 평가 - 쇼핑몰 초기 프로젝트
 
 <a href="http://msa5.cafe24.com/" target="_blank">사이트 바로가기 🔗 </a>
 
